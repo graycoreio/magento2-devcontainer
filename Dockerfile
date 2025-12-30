@@ -1,9 +1,10 @@
-FROM php:8.3-fpm
+FROM php:8.1-fpm
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     curl \
+    libssl-dev \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
@@ -22,7 +23,7 @@ RUN apt-get update && apt-get install -y \
     default-mysql-client \
     && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions required by Magento 2.4.8
+# Install PHP extensions required by Magento
 # Note: curl, ctype, fileinfo, filter, hash, iconv, openssl, and tokenizer are built-in
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install -j$(nproc) \
@@ -40,8 +41,8 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     xsl \
     zip
 
-# Install Composer 2.8
-RUN curl -sS https://getcomposer.org/installer | php -- --version=2.8.4 --install-dir=/usr/local/bin --filename=composer
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --version=2.2.21 --install-dir=/usr/local/bin --filename=composer
 
 # Configure PHP
 RUN cp "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini" \

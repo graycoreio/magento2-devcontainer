@@ -30,7 +30,7 @@ services:
       - php
 
   db:
-    image: mariadb:11.4
+    image: mariadb:10.11
     environment:
       MYSQL_ROOT_PASSWORD: magento
       MYSQL_DATABASE: magento
@@ -46,7 +46,7 @@ services:
     command: --max_allowed_packet=256M
 
   opensearch:
-    image: opensearchproject/opensearch:2.19.0
+    image: opensearchproject/opensearch:2.19.1
     environment:
       - discovery.type=single-node
       - bootstrap.memory_lock=true

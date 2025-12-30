@@ -1,5 +1,5 @@
 {
-  "name": "Magento 2.4.8",
+  "name": "Magento 2.4.6",
   "dockerComposeFile": "docker-compose.yml",
   "service": "php",
   "workspaceFolder": "/workspace",
@@ -32,8 +32,7 @@
         "esbenp.prettier-vscode"
       ],
       "settings": {
-        "php.validate.executablePath": "/usr/local/bin/php",
-        "intelephense.environment.phpVersion": "8.3"
+        "php.validate.executablePath": "/usr/local/bin/php"
       }
     }
   },
