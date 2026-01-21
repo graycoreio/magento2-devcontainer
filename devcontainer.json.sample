@@ -1,15 +1,23 @@
 {
-  "name": "Magento 2.4.8",
-  "dockerComposeFile": "docker-compose.yml",
+  "name": "My Project Magento",
+  "dockerComposeFile": [
+    "docker-compose.yml",
+    "magento2-devcontainer/docker-compose.yml",
+    "docker-compose.overrides.yml"
+  ],
+  "workspaceFolder": "/workspace/magento2",
   "service": "php",
-  "workspaceFolder": "/workspace",
   "forwardPorts": [
+    80,
     3306,
     9200,
     5672,
     6379
   ],
   "portsAttributes": {
+    "80": {
+      "label": "Nginx"
+    },
     "3306": {
       "label": "MySQL/MariaDB"
     },
@@ -28,16 +36,11 @@
       "extensions": [
         "bmewburn.vscode-intelephense-client",
         "xdebug.php-debug",
-        "EditorConfig.EditorConfig",
         "esbenp.prettier-vscode"
-      ],
-      "settings": {
-        "php.validate.executablePath": "/usr/local/bin/php",
-        "intelephense.environment.phpVersion": "8.3"
-      }
+      ]
     }
   },
-  "remoteUser": "www-data",
+  "remoteUser": "dev",
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/github-cli:1": {}
