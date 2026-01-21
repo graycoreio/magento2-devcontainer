@@ -1,6 +1,6 @@
 services:
   php:
-    image: mappia/magento-php:devcontainer8.1
+    image: mappia/magento-php:devcontainer8.4
     environment:
       - PHP_IDE_CONFIG=serverName=magento
     networks:
