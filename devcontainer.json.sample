@@ -2,7 +2,7 @@
   "name": "My Project Magento",
   "dockerComposeFile": [
     "docker-compose.yml",
-    "magento2-devcontainer/docker-compose.yml",
+    "magento2-devcontainer/compose/latest/docker-compose.yml",
     "docker-compose.overrides.yml"
   ],
   "workspaceFolder": "/workspace/magento2",

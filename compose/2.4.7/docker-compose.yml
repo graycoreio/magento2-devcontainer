@@ -1,0 +1,98 @@
+services:
+  php:
+    image: mappia/magento-php:devcontainer8.3
+    environment:
+      - PHP_IDE_CONFIG=serverName=magento
+    networks:
+      - magento
+    depends_on:
+      - db
+      - opensearch
+      - rabbitmq
+      - redis
+
+  nginx:
+    image: nginx:1.28
+    environment:
+      - MAGENTO2_UPSTREAM=php
+      - MAGENTO2_UPSTREAM_PORT=9000
+      - NGINX_PORT=8000
+      - NGINX_TLS_PORT=8443
+    ports:
+      - "80:8000"
+      - "443:8443"
+    networks:
+      - magento
+    depends_on:
+      - php
+
+  db:
+    image: mariadb:11.4
+    environment:
+      MYSQL_ROOT_PASSWORD: magento
+      MYSQL_DATABASE: magento
+      MYSQL_USER: magento
+      MYSQL_PASSWORD: magento
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - magento
+    command: --max_allowed_packet=256M
+
+  opensearch:
+    image: opensearchproject/opensearch:2.19.1
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=TH65Fda4IIZoNVSAF6R0lgP&
+      - plugins.security.disabled=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    ports:
+      - "9200:9200"
+      - "9600:9600"
+    volumes:
+      - opensearch_data:/usr/share/opensearch/data
+    networks:
+      - magento
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    environment:
+      RABBITMQ_DEFAULT_USER: magento
+      RABBITMQ_DEFAULT_PASS: magento
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - magento
+
+  redis:
+    image: redis:7.2
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - magento
+    command: redis-server --appendonly yes
+
+volumes:
+  db_data:
+  opensearch_data:
+  rabbitmq_data:
+  redis_data:
+
+networks:
+  magento:
+    driver: bridge
