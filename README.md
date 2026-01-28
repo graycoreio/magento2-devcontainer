@@ -2,6 +2,12 @@
 
 This devcontainer provides a complete development environment for Magento 2 that meets [Adobe's official system requirements](https://experienceleague.adobe.com/en/docs/commerce-operations/installation-guide/system-requirements).
 
+## Prerequisites
+
+- [VSCode](https://code.visualstudio.com/) (or an editor that supports devcontainers)
+- [Docker](https://www.docker.com/products/docker-desktop/)
+- [Github Codespaces](https://github.com/features/codespaces) (Optional)
+
 ## Supported Versions
 
 This environment will support all of the currently supported Magento versions. There are multiple configurations available (one for each major version of Magento).
