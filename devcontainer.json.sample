@@ -5,7 +5,7 @@
     "magento2-devcontainer/compose/2.4.8/docker-compose.yml",
     "docker-compose.overrides.yml"
   ],
-  "workspaceFolder": "/workspace/magento2",
+  "workspaceFolder": "/workspace",
   "service": "php",
   "forwardPorts": [
     80,
