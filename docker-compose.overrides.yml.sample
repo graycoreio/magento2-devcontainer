@@ -1,0 +1,12 @@
+services:
+  php:
+    volumes:
+      - ../:/workspace:cached
+    working_dir: /workspace
+
+  nginx:
+    environment:
+      - MAGE_ROOT_DIR=/workspace
+    volumes:
+      - ../:/workspace:cached
+      - ./magento2-devcontainer/nginx:/etc/nginx/templates

@@ -15,19 +15,38 @@ This environment will support all of the currently supported Magento versions. T
 
 ## Getting Started
 
-1. Add this repository as a git submodule to your Magento project:
+1. Make a .devcontainer folder in your project
 
-   ```bash
-   git submodule add https://github.com/graycoreio/magento2-devcontainer.git .devcontainer/magento2-devcontainer
-   ```
+```bash
+mkdir -p .devcontainer
+```
 
-2. Copy the sample devcontainer.json to your project:
+2. Add this repository as a git submodule to your Magento project:
 
-   ```bash
-   cp .devcontainer/magento2-devcontainer/devcontainer.json.sample .devcontainer/devcontainer.json
-   ```
+```bash
+git submodule add https://github.com/graycoreio/magento2-devcontainer.git .devcontainer/magento2-devcontainer
+```
 
-3. Open the project in VS Code and click "Reopen in Container" when prompted.
+3. Run the `init` script 
+
+```bash
+/bin/bash .devcontainer/magento2-devcontainer/bin/init.sh
+```
+
+> [!INFO]
+> If you're on Windows (and not using WSL2) and don't have access to bash, you can simply get away with copying the sample
+> `devcontainer.json.sample`, `docker-compose.overrides.yml` and making a simple `docker-compose.yml` with the following content into your .devcontainer folder:
+
+```yml
+services: {}
+```
+
+4. (Optional) Run the `setup` script
+```bash
+/bin/bash .devcontainer/magento2-devcontainer/bin/setup-install.sh
+```
+
+5. Open the project in VS Code and click "Reopen in Container" when prompted.
 
 ## Additional Resources
 
