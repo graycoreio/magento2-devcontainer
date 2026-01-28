@@ -12,8 +12,6 @@ This environment will support all of the currently supported Magento versions. T
 | v2.4.7          | [compose/2.4.7/docker-compose.yml](compose/2.4.7/docker-compose.yml)   |
 | v2.4.8          | [compose/2.4.8/docker-compose.yml](compose/2.4.8/docker-compose.yml)   |
 | v2.4.9          | [compose/2.4.9/docker-compose.yml](compose/2.4.9/docker-compose.yml)   |
-| next            | [compose/next/docker-compose.yml](compose/next/docker-compose.yml)     |
-| latest          | [compose/latest/docker-compose.yml](compose/latest/docker-compose.yml) |
 
 ## Getting Started
 

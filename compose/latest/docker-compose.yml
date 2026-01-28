@@ -1,2 +1,0 @@
-include:
-  - path: ../2.4.8/docker-compose.yml
