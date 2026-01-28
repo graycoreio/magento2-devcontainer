@@ -43,16 +43,17 @@ git submodule add https://github.com/graycoreio/magento2-devcontainer.git .devco
 > If you're on Windows (and not using WSL2) and don't have access to bash, you can simply get away with copying the sample
 > `devcontainer.json.sample`, `docker-compose.overrides.yml` and making a simple `docker-compose.yml` with the following content into your .devcontainer folder:
 
+4. Open the project in VS Code and click "Reopen in Container" when prompted.
+
 ```yml
 services: {}
 ```
 
-4. (Optional) Run the `setup` script
+5. (Optional) Run the `setup` script
 ```bash
 /bin/bash .devcontainer/magento2-devcontainer/bin/setup-install.sh
 ```
 
-5. Open the project in VS Code and click "Reopen in Container" when prompted.
 
 ## Additional Resources
 
