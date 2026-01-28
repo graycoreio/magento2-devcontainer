@@ -59,6 +59,11 @@ LANGUAGE="${LANGUAGE:-en_US}"
 CURRENCY="${CURRENCY:-USD}"
 TIMEZONE="${TIMEZONE:-America/New_York}"
 
+# Setting system permissions
+find var generated vendor pub/static pub/media app/etc -type f -exec chmod g+w {} +
+find var generated vendor pub/static pub/media app/etc -type d -exec chmod g+ws {} +
+chmod u+x bin/magento
+
 # Build the setup:install command
 cat << 'EOF'
 bin/magento setup:install \
