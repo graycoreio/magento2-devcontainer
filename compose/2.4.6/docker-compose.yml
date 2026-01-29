@@ -3,6 +3,9 @@ services:
     image: mappia/magento-php:devcontainer8.2
     environment:
       - PHP_IDE_CONFIG=serverName=magento
+      - CONFIG__DEFAULT__CATALOG__SEARCH__OPENSEARCH_SERVER_HOSTNAME=opensearch
+      - CONFIG__DEFAULT__CATALOG__SEARCH__ENGINE=opensearch
+      - CONFIG__DEFAULT__CATALOG__SEARCH__OPENSEARCH_SERVER_PORT=9200
     networks:
       - magento
     depends_on:
