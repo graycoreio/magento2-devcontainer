@@ -21,6 +21,8 @@ services:
       - MAGENTO2_UPSTREAM_PORT=9000
       - NGINX_PORT=8000
       - NGINX_TLS_PORT=8443
+      - MAGENTO_TLS_CERT=snakeoil.crt
+      - MAGENTO_TLS_KEY=snakeoil.key
     ports:
       - "80:8000"
       - "443:8443"

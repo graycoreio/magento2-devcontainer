@@ -9,4 +9,4 @@ services:
       - MAGE_ROOT_DIR=/workspace
     volumes:
       - ../:/workspace:cached
-      - ./magento2-devcontainer/nginx:/etc/nginx/templates
+      - ./magento2-devcontainer/nginx/default:/etc/nginx/templates
