@@ -10,7 +10,7 @@ This devcontainer provides a complete development environment for Magento 2 that
 
 ## Installed tools
 
-### Devcontainer Features (You control)
+### Devcontainer Features
 - [Claude Code](https://code.claude.com/docs/en/overview)
 - [Github CLI](https://cli.github.com/)
 
@@ -32,38 +32,7 @@ This environment will support all of the currently supported Magento versions. T
 
 ## Getting Started
 
-1. Make a .devcontainer folder in your project
-
-```bash
-mkdir -p .devcontainer
-```
-
-2. Add this repository as a git submodule to your Magento project:
-
-```bash
-git submodule add https://github.com/graycoreio/magento2-devcontainer.git .devcontainer/magento2-devcontainer
-```
-
-3. Run the `init` script 
-
-```bash
-/bin/bash .devcontainer/magento2-devcontainer/bin/init.sh
-```
-
-> [!INFO]
-> If you're on Windows (and not using WSL2) and don't have access to bash, you can simply get away with copying the sample
-> `devcontainer.json.sample`, `docker-compose.overrides.yml` and making a simple `docker-compose.yml` with the following content into your .devcontainer folder:
-
-```yml
-services: {}
-```
-
-4. Open the project in VS Code and click "Reopen in Container" when prompted.
-
-5. (Optional) Run the `setup` script
-```bash
-/bin/bash .devcontainer/magento2-devcontainer/bin/setup-install.sh
-```
+See the [Getting Started Guide](https://devcontainer.mappia.io/getting-started.html).
 
 
 ## Additional Resources
