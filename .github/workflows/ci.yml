@@ -1,0 +1,209 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  # Test with existing Magento project (user has PHP/Composer locally)
+  test-existing-project:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - magento_version: ">=2.4.6 <2.4.7"
+            repository_url: "https://mirror.mage-os.org/"
+            stability: ""
+          - magento_version: ">=2.4.7 <2.4.8"
+            repository_url: "https://mirror.mage-os.org/"
+            stability: ""
+          - magento_version: ">=2.4.8 <2.4.9"
+            repository_url: "https://mirror.mage-os.org/"
+            stability: ""
+
+    name: Existing Project ${{ matrix.name || matrix.magento_version }}
+
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Install devcontainer CLI
+        run: npm install -g @devcontainers/cli
+
+      - name: Create Magento project
+        run: |
+          composer create-project --no-install \
+            --repository-url=${{ matrix.repository_url }} \
+            ${{ matrix.stability && format('--stability {0}', matrix.stability) || '' }} \
+            magento/project-community-edition${{ matrix.magento_version && format(':"{0}"', matrix.magento_version) || '' }} test-project
+
+      - name: Checkout devcontainer
+        uses: actions/checkout@v4
+        with:
+          path: test-project/.devcontainer/magento2-devcontainer
+
+      - name: Initialize devcontainer configuration
+        working-directory: test-project
+        run: |
+          # Run init.sh - it will auto-detect the Magento version from composer.json
+          # Just need to provide the devcontainer name (empty = default)
+          printf '\n' | .devcontainer/magento2-devcontainer/bin/init.sh
+
+          # Show the generated config
+          echo "=== devcontainer.json ==="
+          cat .devcontainer/devcontainer.json
+
+      - name: Build and start devcontainer
+        working-directory: test-project
+        run: |
+          devcontainer up --workspace-folder .
+
+      - name: Verify services are running
+        working-directory: test-project
+        run: |
+          echo "Waiting for OpenSearch to be ready..."
+          timeout 120 bash -c 'until curl -s http://localhost:9200/_cluster/health | grep -q "status"; do sleep 5; done'
+          echo "OpenSearch is ready"
+
+          echo "=== Checking PHP ==="
+          devcontainer exec --workspace-folder . php -v
+
+          echo "=== Checking database ==="
+          devcontainer exec --workspace-folder . \
+            bash -c 'mysql -h db -umagento -pmagento -e "SELECT 1" magento'
+
+          echo "=== Checking OpenSearch ==="
+          devcontainer exec --workspace-folder . \
+            bash -c 'curl -s http://opensearch:9200/_cluster/health'
+
+          echo "=== Checking RabbitMQ ==="
+          devcontainer exec --workspace-folder . \
+            bash -c 'curl -s -u magento:magento http://rabbitmq:15672/api/overview | head -c 200'
+
+          echo ""
+          echo "=== Checking Redis ==="
+          devcontainer exec --workspace-folder . \
+            bash -c 'redis-cli -h redis ping'
+
+      - name: Install Magento dependencies
+        working-directory: test-project
+        run: |
+          devcontainer exec --workspace-folder . composer install
+
+      - name: Run setup-install.sh
+        working-directory: test-project
+        run: |
+          echo "=== Generated setup:install command ==="
+          devcontainer exec --workspace-folder . \
+            bash -c '.devcontainer/magento2-devcontainer/bin/setup-install.sh'
+
+          echo ""
+          echo "=== Running Magento setup:install ==="
+          devcontainer exec --workspace-folder . \
+            bash -c '.devcontainer/magento2-devcontainer/bin/setup-install.sh | bash'
+
+      - name: Verify Magento installation
+        working-directory: test-project
+        run: |
+          echo "=== Checking Magento version ==="
+          devcontainer exec --workspace-folder . bin/magento --version
+
+          echo "=== Checking Magento status ==="
+          devcontainer exec --workspace-folder . bin/magento setup:db:status
+
+      - name: Show container status
+        if: always()
+        working-directory: test-project
+        run: |
+          docker ps -a
+
+  # Test fresh install (user only has Docker/VS Code, no PHP/Composer)
+  test-fresh-install:
+    runs-on: ubuntu-latest
+    name: Fresh Install (latest)
+
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Install devcontainer CLI
+        run: npm install -g @devcontainers/cli
+
+      - name: Checkout devcontainer
+        uses: actions/checkout@v4
+        with:
+          path: .devcontainer/magento2-devcontainer
+
+      - name: Initialize devcontainer configuration
+        run: |
+          # Run init.sh - select latest version (default) and default name
+          printf '\n\n' | .devcontainer/magento2-devcontainer/bin/init.sh
+
+          # Show the generated config
+          echo "=== devcontainer.json ==="
+          cat .devcontainer/devcontainer.json
+
+      - name: Build and start devcontainer
+        run: |
+          devcontainer up --workspace-folder .
+
+      - name: Verify services are running
+        run: |
+          echo "Waiting for OpenSearch to be ready..."
+          timeout 120 bash -c 'until curl -s http://localhost:9200/_cluster/health | grep -q "status"; do sleep 5; done'
+          echo "OpenSearch is ready"
+
+          echo "=== Checking PHP ==="
+          devcontainer exec --workspace-folder . php -v
+
+          echo "=== Checking database ==="
+          devcontainer exec --workspace-folder . \
+            bash -c 'mysql -h db -umagento -pmagento -e "SELECT 1" magento'
+
+          echo "=== Checking OpenSearch ==="
+          devcontainer exec --workspace-folder . \
+            bash -c 'curl -s http://opensearch:9200/_cluster/health'
+
+          echo "=== Checking RabbitMQ ==="
+          devcontainer exec --workspace-folder . \
+            bash -c 'curl -s -u magento:magento http://rabbitmq:15672/api/overview | head -c 200'
+
+          echo ""
+          echo "=== Checking Redis ==="
+          devcontainer exec --workspace-folder . \
+            bash -c 'redis-cli -h redis ping'
+
+      - name: Create Magento project inside container
+        run: |
+          devcontainer exec --workspace-folder . bash -c '
+            composer create-project \
+              --repository-url=https://mirror.mage-os.org/ \
+              magento/project-community-edition /tmp/magento && \
+            cp -r /tmp/magento/. /workspace/ && \
+            rm -rf /tmp/magento
+          '
+
+      - name: Run setup-install.sh
+        run: |
+          echo "=== Generated setup:install command ==="
+          devcontainer exec --workspace-folder . \
+            bash -c '.devcontainer/magento2-devcontainer/bin/setup-install.sh'
+
+          echo ""
+          echo "=== Running Magento setup:install ==="
+          devcontainer exec --workspace-folder . \
+            bash -c '.devcontainer/magento2-devcontainer/bin/setup-install.sh | bash'
+
+      - name: Verify Magento installation
+        run: |
+          echo "=== Checking Magento version ==="
+          devcontainer exec --workspace-folder . bin/magento --version
+
+          echo "=== Checking Magento status ==="
+          devcontainer exec --workspace-folder . bin/magento setup:db:status
+
+      - name: Show container status
+        if: always()
+        run: |
+          docker ps -a
