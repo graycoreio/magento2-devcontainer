@@ -3,8 +3,8 @@
   "dockerComposeFile": [
     "docker-compose.yml",
     "magento2-devcontainer/compose/2.4.8/docker-compose.yml",
-    "magento2-devcontainer/docker-compose.shared.yml",
-    "magento2-devcontainer/docker-compose.local.yml"
+    "docker-compose.shared.yml",
+    "docker-compose.local.yml"
   ],
   "workspaceFolder": "/workspace",
   "service": "php",
