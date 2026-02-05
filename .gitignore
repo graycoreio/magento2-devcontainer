@@ -1,3 +1,4 @@
 .env
 .*/
+!.github
 docker-compose.local.yml
