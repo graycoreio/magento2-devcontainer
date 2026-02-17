@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0](https://github.com/graycoreio/magento2-devcontainer/compare/v1.0.0...v1.1.0) (2026-02-17)
+
+
+### Features
+
+* add speedscope feature ([29a0674](https://github.com/graycoreio/magento2-devcontainer/commit/29a0674c0e47cc7d9a6ef1d8aba2010058ad27c9))
+* allow docker-in-docker to shell to other containers ([93284bc](https://github.com/graycoreio/magento2-devcontainer/commit/93284bcdb074cfbb0d9ce3bdd0e47c9902d4d5b7))
+
 ## 1.0.0 (2026-02-05)
 
 
