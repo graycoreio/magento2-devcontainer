@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.0.0](https://github.com/graycoreio/magento2-devcontainer/compare/v1.1.0...v2.0.0) (2026-04-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* Unfortunately, on Macs and Linux boxes, VSCode will often fail to port-forward 443 and 80. Sometimes, these will work and cause VSCode to request privileges, but more often than not, they don't. It's easier to just use a non-privileged port than fight against admin access. As such, you can now access your site on the portforward `8000`` and `8443` instead.
+
+### Features
+
+* support mailpit for local email ([#10](https://github.com/graycoreio/magento2-devcontainer/issues/10)) ([ed79770](https://github.com/graycoreio/magento2-devcontainer/commit/ed79770852a11c7263e150c387fd571cdb12f38b))
+* use non-privileged ports for nginx ([e452bc7](https://github.com/graycoreio/magento2-devcontainer/commit/e452bc7cc19ff6122bd645da44bdbcd3d4321e4d))
+
+
+### Bug Fixes
+
+* adjust base_url after breakage from e452bc7cc19ff6122bd645da44bdbcd3d4321e4d ([56cf07b](https://github.com/graycoreio/magento2-devcontainer/commit/56cf07b9abc762e6f09ebed8e02905eebb2fd7c4))
+
 ## [1.1.0](https://github.com/graycoreio/magento2-devcontainer/compare/v1.0.0...v1.1.0) (2026-02-17)
 
 
