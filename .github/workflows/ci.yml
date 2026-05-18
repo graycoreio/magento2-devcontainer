@@ -12,7 +12,7 @@ jobs:
     outputs:
       matrix: ${{ steps.supported-version.outputs.matrix }}
     steps:
-      - uses: graycoreio/github-actions-magento2/supported-version@v5.1.0
+      - uses: graycoreio/github-actions-magento2/supported-version@v8.2.0
         id: supported-version
 
   supported-version-latest:
@@ -20,7 +20,7 @@ jobs:
     outputs:
       matrix: ${{ steps.supported-version.outputs.matrix }}
     steps:
-      - uses: graycoreio/github-actions-magento2/supported-version@v5.1.0
+      - uses: graycoreio/github-actions-magento2/supported-version@v8.2.0
         id: supported-version
         with:
           kind: latest
