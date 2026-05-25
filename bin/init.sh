@@ -70,9 +70,19 @@ else
     exit 1
 fi
 
-## Fallback: if the project's exact version doesn't have a compose stack,
-## offer to substitute a Magento version manually (vanilla only — mage-os
-## errors out since there's no menu for it).
+## First fallback: strip a `-pN` patch suffix and retry. Magento ships
+## patch releases like 2.4.6-p15 that share the same docker stack as 2.4.6,
+## so we don't need a separate compose dir per patch.
+if [ ! -d "$DEVCONTAINER_FOLDER/compose/$SELECTED_KEY" ]; then
+    BASE_KEY="${SELECTED_KEY%-p[0-9]*}"
+    if [ "$BASE_KEY" != "$SELECTED_KEY" ] && [ -d "$DEVCONTAINER_FOLDER/compose/$BASE_KEY" ]; then
+        echo "No exact compose stack for $SELECTED_KEY — using compatible $BASE_KEY"
+        SELECTED_KEY="$BASE_KEY"
+    fi
+fi
+
+## Second fallback: if still no match, offer to substitute a Magento version
+## manually (vanilla only — mage-os errors out since there's no menu for it).
 if [ ! -d "$DEVCONTAINER_FOLDER/compose/$SELECTED_KEY" ]; then
     case "$SELECTED_KEY" in
         magento/*)
