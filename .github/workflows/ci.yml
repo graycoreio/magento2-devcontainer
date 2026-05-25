@@ -18,7 +18,7 @@ jobs:
     outputs:
       matrix: ${{ steps.v.outputs.matrix }}
     steps:
-      - uses: graycoreio/github-actions-magento2/supported-version@v8.2.0
+      - uses: graycoreio/github-actions-magento2/supported-version@v8.3.0
         id: v
 
   supported-version-mage-os:
@@ -26,7 +26,7 @@ jobs:
     outputs:
       matrix: ${{ steps.v.outputs.matrix }}
     steps:
-      - uses: graycoreio/github-actions-magento2/supported-version@v8.2.0
+      - uses: graycoreio/github-actions-magento2/supported-version@v8.3.0
         id: v
         with:
           project: mage-os
@@ -36,7 +36,7 @@ jobs:
     outputs:
       matrix: ${{ steps.v.outputs.matrix }}
     steps:
-      - uses: graycoreio/github-actions-magento2/supported-version@v8.2.0
+      - uses: graycoreio/github-actions-magento2/supported-version@v8.3.0
         id: v
         with:
           project: mage-os-minimal
@@ -46,7 +46,7 @@ jobs:
     outputs:
       matrix: ${{ steps.v.outputs.matrix }}
     steps:
-      - uses: graycoreio/github-actions-magento2/supported-version@v8.2.0
+      - uses: graycoreio/github-actions-magento2/supported-version@v8.3.0
         id: v
         with:
           kind: latest
@@ -64,12 +64,14 @@ jobs:
     uses: ./.github/workflows/_test-existing-project.yml
     with:
       matrix: ${{ needs.supported-version-mage-os.outputs.matrix }}
+      repository_url: https://repo.mage-os.org/
 
   test-existing-project-mage-os-minimal:
     needs: supported-version-mage-os-minimal
     uses: ./.github/workflows/_test-existing-project.yml
     with:
       matrix: ${{ needs.supported-version-mage-os-minimal.outputs.matrix }}
+      repository_url: https://repo.mage-os.org/
       # TODO: drop this override once graycoreio/github-actions-magento2
       # removes `rabbitmq` from mage-os-minimal's individual.json and we
       # bump the @v pin below. At that point we can switch the reusable

@@ -16,6 +16,13 @@ on:
         required: false
         type: boolean
         default: true
+      repository_url:
+        description: Composer repository URL used for `composer create-project`
+                     (mage-os/* packages need repo.mage-os.org; vanilla Magento
+                     uses mirror.mage-os.org).
+        required: false
+        type: string
+        default: https://mirror.mage-os.org/
 
 jobs:
   test:
@@ -36,7 +43,7 @@ jobs:
       - name: Create Magento project
         run: |
           composer create-project --no-install \
-            --repository-url=https://mirror.mage-os.org/ \
+            --repository-url="${{ inputs.repository_url }}" \
             "${{ matrix.magento }}" test-project
 
       - name: Checkout devcontainer
