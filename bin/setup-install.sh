@@ -9,18 +9,30 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$SCRIPT_DIR/lib/detect-devcontainer.sh"
 
-load_devcontainer_config || exit 1
+get_devcontainer_config || exit 1
 
-# Check for version mismatch with project
-if load_project_magento_version; then
-    if [ "$MAGENTO_VERSION" != "$PROJECT_MAGENTO_VERSION" ]; then
+# mage-os minimal omits rabbitmq from its compose stack. Setup:install will
+# hang crash on a non-existent flags if we pass --amqp-* flags. 
+# Drive both off the compose key the devcontainer is configured for.
+USE_RABBITMQ=1
+if [[ "$DEVCONTAINER_COMPOSE_KEY" == mage-os-minimal/* ]]; then
+    USE_RABBITMQ=0
+fi
+
+# Check for distribution/version mismatch with the installed project.
+# Comparing compose keys (not just version strings) catches the case where
+# the devcontainer is on a vanilla stack but composer.json has mage-os, or
+# where the major version diverges — both would have been masked by the
+# previous "compare upstream Magento version" approach.
+if get_magento_version; then
+    PROJECT_COMPOSE_KEY="$PROJECT_DISTRIBUTION/$PROJECT_VERSION"
+    if [ "$DEVCONTAINER_COMPOSE_KEY" != "$PROJECT_COMPOSE_KEY" ]; then
         echo "" >&2
-        echo "WARNING: Version mismatch detected!" >&2
-        echo "  Devcontainer configured for: $MAGENTO_VERSION" >&2
-        echo "  Project composer.json uses:  $PROJECT_MAGENTO_VERSION" >&2
+        echo "WARNING: Stack mismatch detected!" >&2
+        echo "  Devcontainer configured for: $DEVCONTAINER_COMPOSE_KEY" >&2
+        echo "  Project composer.json uses:  $PROJECT_COMPOSE_KEY ($PROJECT_PACKAGE)" >&2
         echo "" >&2
-        echo "Consider updating your devcontainer.json to use:" >&2
-        echo "  compose/$PROJECT_MAGENTO_VERSION/docker-compose.yml" >&2
+        echo "Consider re-running bin/init.sh to align the compose stack." >&2
         echo "" >&2
         read -p "Continue anyway? [y/N]: " confirm </dev/tty
         if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
@@ -71,7 +83,7 @@ CURRENCY="${CURRENCY:-USD}"
 TIMEZONE="${TIMEZONE:-America/New_York}"
 
 # Resolve the Magento root for the file ops and the printed install command.
-# `load_project_magento_version` sets MAGENTO_ROOT via find_magento_root, which
+# `get_magento_version` sets MAGENTO_ROOT via find_magento_root, which
 # walks subdirs and supports monorepo layouts (e.g. magento/ alongside a
 # storefront workspace). Honor an explicit env override; fall back to cwd when
 # the project's Magento version couldn't be detected (e.g. pre-install).
@@ -94,7 +106,9 @@ wait_for_services() {
     while [ "$elapsed" -lt "$wait_timeout" ]; do
         local pending=()
         tcp_check "$DB_HOST" 3306                       || pending+=("db ($DB_HOST:3306)")
-        tcp_check "$RABBITMQ_HOST" "$RABBITMQ_PORT"     || pending+=("rabbitmq ($RABBITMQ_HOST:$RABBITMQ_PORT)")
+        if [ "$USE_RABBITMQ" = "1" ]; then
+            tcp_check "$RABBITMQ_HOST" "$RABBITMQ_PORT" || pending+=("rabbitmq ($RABBITMQ_HOST:$RABBITMQ_PORT)")
+        fi
         tcp_check "$OPENSEARCH_HOST" "$OPENSEARCH_PORT" || pending+=("opensearch ($OPENSEARCH_HOST:$OPENSEARCH_PORT)")
         if [ ${#pending[@]} -eq 0 ]; then
             echo "# All services reachable after ${elapsed}s." >&2
@@ -174,14 +188,25 @@ cat << EOF
     --page-cache-redis-server="$REDIS_HOST" \\
     --page-cache-redis-port="$REDIS_PORT" \\
     --page-cache-redis-db=2 \\
+EOF
+
+# mage-os minimal ships without rabbitmq; passing --amqp-* would cause
+# setup:install to fail on connection. Emit the AMQP flags only when the
+# stack actually has rabbitmq.
+if [ "$USE_RABBITMQ" = "1" ]; then
+    cat << EOF
     --amqp-host="$RABBITMQ_HOST" \\
     --amqp-port="$RABBITMQ_PORT" \\
     --amqp-user="$RABBITMQ_USER" \\
     --amqp-password="$RABBITMQ_PASSWORD" \\
+EOF
+fi
+
+cat << 'EOF'
     --cleanup-database
 EOF
 
 echo "" >&2
-echo "# Magento Version: $MAGENTO_VERSION" >&2
+echo "# Stack: $DEVCONTAINER_COMPOSE_KEY (upstream Magento $(compose_key_to_magento_version "$DEVCONTAINER_COMPOSE_KEY"))" >&2
 echo "# To execute, copy the command above and run it in your workspace" >&2
 echo "# Or pipe this script to bash: ./bin/setup-install.sh | bash" >&2

@@ -16,7 +16,7 @@
 
 <h3 align="center">Supported Versions</h3>
 <p align="center">
-  <a href="compose/2.4.6/docker-compose.yml"><code>2.4.6</code></a> · <a href="compose/2.4.7/docker-compose.yml"><code>2.4.7</code></a> · <a href="compose/2.4.8/docker-compose.yml"><code>2.4.8</code></a> · <a href="compose/2.4.9/docker-compose.yml"><code>2.4.9 (beta)</code></a>
+  <a href="compose/magento/2.4.6/docker-compose.yml"><code>2.4.6</code></a> · <a href="compose/magento/2.4.7/docker-compose.yml"><code>2.4.7</code></a> · <a href="compose/magento/2.4.8/docker-compose.yml"><code>2.4.8</code></a> · <a href="compose/magento/2.4.9/docker-compose.yml"><code>2.4.9</code></a> · <a href="compose/mage-os/3.0.0/docker-compose.yml"><code>mage-os 3.0.0</code></a> · <a href="compose/mage-os-minimal/3.0.0/docker-compose.yml"><code>mage-os-minimal 3.0.0</code></a>
 </p>
 
 ---

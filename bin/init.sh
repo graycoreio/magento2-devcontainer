@@ -6,7 +6,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$SCRIPT_DIR/lib/detect-devcontainer.sh"
 
 ## Find the devcontainer folder
-if ! DEVCONTAINER_FOLDER=$(find_devcontainer_folder); then
+if ! DEVCONTAINER_FOLDER=$(find_magento2_devcontainer_dir); then
     echo "Error: Could not find magento2-devcontainer folder in .devcontainer/"
     echo "Ensure you have cloned the magento2-devcontainer repo as a submodule."
     exit 1
@@ -59,33 +59,40 @@ select_magento_version() {
     fi
 }
 
-## Detect project Magento version
-SELECTED_VERSION=""
-if load_project_magento_version 2>/dev/null; then
-    echo "Detected project Magento version: $PROJECT_MAGENTO_VERSION"
-
-    # Check if we have a matching compose version
-    if [ -d "$DEVCONTAINER_FOLDER/compose/$PROJECT_MAGENTO_VERSION" ]; then
-        SELECTED_VERSION="$PROJECT_MAGENTO_VERSION"
-        echo "Using matching devcontainer version: $SELECTED_VERSION"
-    else
-        echo "WARNING: No exact match for version $PROJECT_MAGENTO_VERSION"
-        echo ""
-        read -p "Select a compatible version manually? [Y/n]: " confirm
-        if [[ ! "$confirm" =~ ^[Nn]$ ]]; then
-            SELECTED_VERSION=$(select_magento_version "$AVAILABLE_VERSIONS") || exit 1
-        fi
-    fi
+## Pick a compose key — the <distribution>/<version> path under compose/
+## that the devcontainer will be wired to. Auto-detected from the project's
+## composer manifest when present; otherwise prompts for a Magento version.
+if get_magento_version 2>/dev/null; then
+    SELECTED_KEY="$PROJECT_DISTRIBUTION/$PROJECT_VERSION"
+elif MANUAL_VERSION=$(select_magento_version); then
+    SELECTED_KEY="magento/$MANUAL_VERSION"
 else
-    echo "No existing Magento project detected."
-    echo ""
-    SELECTED_VERSION=$(select_magento_version "$AVAILABLE_VERSIONS") || exit 1
-fi
-
-if [ -z "$SELECTED_VERSION" ]; then
-    echo "Error: No Magento version selected."
     exit 1
 fi
+
+## Fallback: if the project's exact version doesn't have a compose stack,
+## offer to substitute a Magento version manually (vanilla only — mage-os
+## errors out since there's no menu for it).
+if [ ! -d "$DEVCONTAINER_FOLDER/compose/$SELECTED_KEY" ]; then
+    case "$SELECTED_KEY" in
+        magento/*)
+            echo "WARNING: No compose stack for $SELECTED_KEY"
+            read -p "Select a compatible Magento version manually? [Y/n]: " confirm
+            if [[ "$confirm" =~ ^[Nn]$ ]]; then
+                echo "Aborted." >&2
+                exit 1
+            fi
+            MANUAL_VERSION=$(select_magento_version) || exit 1
+            SELECTED_KEY="magento/$MANUAL_VERSION"
+            ;;
+        *)
+            echo "Error: No compose stack for $SELECTED_KEY." >&2
+            exit 1
+            ;;
+    esac
+fi
+
+echo "Using compose stack: $SELECTED_KEY"
 
 ## Prompt for devcontainer name
 read -p "Enter a name for your devcontainer (it should be unique per project) [$FOLDER_NAME]: " DEVCONTAINER_NAME
@@ -96,10 +103,13 @@ cp "$DEVCONTAINER_FOLDER/docker-compose.shared.yml.sample" "$TARGET_DIR/docker-c
 cp "$DEVCONTAINER_FOLDER/docker-compose.local.yml.sample" "$TARGET_DIR/docker-compose.local.yml"
 echo "services: {}" > "$TARGET_DIR/docker-compose.yml"
 
-## Copy over devcontainer and set the name and version
+## Copy over devcontainer and set the name and compose key.
+## Every compose key is <distribution>/<version> so a single alternation
+## covers magento, mage-os, and mage-os-minimal. Uses `#` as the s-delimiter
+## so the `/` inside compose keys doesn't terminate the substitution early.
 cp "$DEVCONTAINER_FOLDER/devcontainer.json.sample" "$TARGET_DIR/devcontainer.json"
 sed -i "s/\"name\": \"My Project Magento\"/\"name\": \"$DEVCONTAINER_NAME\"/" "$TARGET_DIR/devcontainer.json"
-sed -i "s|$FOLDER_NAME/compose/[0-9]\+\.[0-9]\+\.[0-9]\+/|$FOLDER_NAME/compose/$SELECTED_VERSION/|g" "$TARGET_DIR/devcontainer.json"
+sed -i -E "s#$FOLDER_NAME/compose/(magento|mage-os-minimal|mage-os)/[0-9]+\.[0-9]+\.[0-9]+/#$FOLDER_NAME/compose/$SELECTED_KEY/#g" "$TARGET_DIR/devcontainer.json"
 
 ## Copy .env.sample and set the project name
 cp "$DEVCONTAINER_FOLDER/.env.sample" "$TARGET_DIR/.env"
@@ -107,4 +117,4 @@ sed -i "s/COMPOSE_PROJECT_NAME=\"magento2-devcontainer\"/COMPOSE_PROJECT_NAME=\"
 
 echo ""
 echo "Devcontainer '$DEVCONTAINER_NAME' initialized successfully."
-echo "  Magento version: $SELECTED_VERSION"
+echo "  Compose stack: $SELECTED_KEY"
