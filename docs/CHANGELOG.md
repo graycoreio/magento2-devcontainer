@@ -1,5 +1,35 @@
 # Changelog
 
+## [3.0.0](https://github.com/graycoreio/magento2-devcontainer/compare/v2.0.0...v3.0.0) (2026-05-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* 
+
+### Features
+
+* add out-of-the-box support for Magento v2.4.9 ([#25](https://github.com/graycoreio/magento2-devcontainer/issues/25)) ([d86e5ab](https://github.com/graycoreio/magento2-devcontainer/commit/d86e5ab9a1fee9e8b062b095c2b191f62746e648))
+* add wait for services check just to make sure everything is up ([e86e642](https://github.com/graycoreio/magento2-devcontainer/commit/e86e64239a97090e4bdbdfd5424cf07b35c3da39))
+* determine codespaces url from environment configuration ([a9d3e0f](https://github.com/graycoreio/magento2-devcontainer/commit/a9d3e0f03784fbdbe65ef036883fbaaa0ac48b57))
+* embed CONFIG__DEFAULT__WEB__URL__REDIRECT_TO_BASE to make codespaces work ([fe54779](https://github.com/graycoreio/magento2-devcontainer/commit/fe547793f70400d13fb199d1aac98503389550c3))
+* enable auto port-forward from codespaces ([375c2dd](https://github.com/graycoreio/magento2-devcontainer/commit/375c2dddd7a8ee05522002d5b49fbe8742779e46))
+* honor X-Forwarded-Host/Proto for FastCGI ([3193f39](https://github.com/graycoreio/magento2-devcontainer/commit/3193f39320249d1aeeacfa21163f5cb33c67963f))
+* relabel nginx port name ([7fd7ea2](https://github.com/graycoreio/magento2-devcontainer/commit/7fd7ea2599e1dd0919755fc8c1d9a2e485c7403f))
+* remove extranous ports ([c2fffbf](https://github.com/graycoreio/magento2-devcontainer/commit/c2fffbf71c1a9f01bac0983dde8d2e4d8a41b85c))
+* replace waits with healthchecks ([c3adb3b](https://github.com/graycoreio/magento2-devcontainer/commit/c3adb3b0e7401af9a1b6219901cb993ac177eff1))
+* support mage-os and mage-os-minimal distributions ([#26](https://github.com/graycoreio/magento2-devcontainer/issues/26)) ([803523a](https://github.com/graycoreio/magento2-devcontainer/commit/803523a36749ad5cd011f00c19e78ce0557fb6dc))
+* use discovered MAGENTO_ROOT to set commands for setup:install ([244a4d6](https://github.com/graycoreio/magento2-devcontainer/commit/244a4d6c8f92e87b93acf9aa8bd7dcb3e04ff213))
+
+
+### Bug Fixes
+
+* disable redirect_to_base behavior ([5133c68](https://github.com/graycoreio/magento2-devcontainer/commit/5133c6878ee4430fb1238eeed36d4ce3a49b8013))
+* disable USE_SECURE in local devcontainer ([bb114fc](https://github.com/graycoreio/magento2-devcontainer/commit/bb114fc37c8631424ee2ba229b36163d3a76d802))
+* remove extraneous codespaces-portforward.sh ([e976df9](https://github.com/graycoreio/magento2-devcontainer/commit/e976df9e5140ae127b7e2e8d54742b2d1cb698fe))
+* restore unnamed port prefixes ([dbacff2](https://github.com/graycoreio/magento2-devcontainer/commit/dbacff2647915947eb6a313b2feebfedf99ae649))
+* swap from mysqladmin to healthcheck.sh for mariadb:11.4 ([877e326](https://github.com/graycoreio/magento2-devcontainer/commit/877e3266f305df05420098f488d5e6b088a99254))
+
 ## [2.0.0](https://github.com/graycoreio/magento2-devcontainer/compare/v1.1.0...v2.0.0) (2026-04-07)
 
 
