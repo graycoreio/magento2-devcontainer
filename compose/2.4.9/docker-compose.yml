@@ -1,6 +1,6 @@
 services:
   php:
-    image: mappia/magento-php:devcontainer8.4
+    image: mappia/magento-php:devcontainer8.5
     environment:
       - PHP_IDE_CONFIG=serverName=magento
       - CONFIG__DEFAULT__CATALOG__SEARCH__OPENSEARCH_SERVER_HOSTNAME=opensearch
@@ -74,7 +74,7 @@ services:
       - magento
 
   rabbitmq:
-    image: rabbitmq:4.1-management
+    image: rabbitmq:4.2-management
     environment:
       RABBITMQ_DEFAULT_USER: magento
       RABBITMQ_DEFAULT_PASS: magento
@@ -87,7 +87,7 @@ services:
       - magento
 
   redis:
-    image: valkey/valkey:8
+    image: valkey/valkey:9
     ports:
       - "6379:6379"
     volumes:

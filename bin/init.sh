@@ -22,8 +22,8 @@ echo "Target directory: $TARGET_DIR"
 VERSIONS=(
     "2.4.6:"
     "2.4.7:"
-    "2.4.8:default"
-    "2.4.9:beta"
+    "2.4.8"
+    "2.4.9:default"
 )
 
 ## Prompt user to select a Magento version
