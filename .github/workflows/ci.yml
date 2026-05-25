@@ -11,128 +11,74 @@ on:
       - 'docs/**'
 
 jobs:
-  supported-version:
+  # Version-matrix discovery — one job per distribution, since the
+  # supported-version action only emits a single project per call.
+  supported-version-magento:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.supported-version.outputs.matrix }}
+      matrix: ${{ steps.v.outputs.matrix }}
     steps:
       - uses: graycoreio/github-actions-magento2/supported-version@v8.2.0
-        id: supported-version
+        id: v
+
+  supported-version-mage-os:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.v.outputs.matrix }}
+    steps:
+      - uses: graycoreio/github-actions-magento2/supported-version@v8.2.0
+        id: v
+        with:
+          project: mage-os
+
+  supported-version-mage-os-minimal:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.v.outputs.matrix }}
+    steps:
+      - uses: graycoreio/github-actions-magento2/supported-version@v8.2.0
+        id: v
+        with:
+          project: mage-os-minimal
 
   supported-version-latest:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.supported-version.outputs.matrix }}
+      matrix: ${{ steps.v.outputs.matrix }}
     steps:
       - uses: graycoreio/github-actions-magento2/supported-version@v8.2.0
-        id: supported-version
+        id: v
         with:
           kind: latest
 
-  # Test with existing Magento project (user has PHP/Composer locally)
-  test-existing-project:
-    needs: supported-version
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJSON(needs.supported-version.outputs.matrix) }}
+  # Existing-project tests for each distribution — delegate to the reusable
+  # workflow so the matrix steps live in one place.
+  test-existing-project-magento:
+    needs: supported-version-magento
+    uses: ./.github/workflows/_test-existing-project.yml
+    with:
+      matrix: ${{ needs.supported-version-magento.outputs.matrix }}
 
-    name: Existing Project ${{ matrix.magento }}
+  test-existing-project-mage-os:
+    needs: supported-version-mage-os
+    uses: ./.github/workflows/_test-existing-project.yml
+    with:
+      matrix: ${{ needs.supported-version-mage-os.outputs.matrix }}
 
-    steps:
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
+  test-existing-project-mage-os-minimal:
+    needs: supported-version-mage-os-minimal
+    uses: ./.github/workflows/_test-existing-project.yml
+    with:
+      matrix: ${{ needs.supported-version-mage-os-minimal.outputs.matrix }}
+      # TODO: drop this override once graycoreio/github-actions-magento2
+      # removes `rabbitmq` from mage-os-minimal's individual.json and we
+      # bump the @v pin below. At that point we can switch the reusable
+      # workflow to derive has_rabbitmq from matrix.rabbitmq directly.
+      has_rabbitmq: false
 
-      - name: Install devcontainer CLI
-        run: npm install -g @devcontainers/cli
-
-      - name: Create Magento project
-        run: |
-          composer create-project --no-install \
-            --repository-url=https://mirror.mage-os.org/ \
-            "${{ matrix.magento }}" test-project
-
-      - name: Checkout devcontainer
-        uses: actions/checkout@v6
-        with:
-          path: test-project/.devcontainer/magento2-devcontainer
-
-      - name: Initialize devcontainer configuration
-        working-directory: test-project
-        run: |
-          # Run init.sh - it will auto-detect the Magento version from composer.json
-          # Just need to provide the devcontainer name (empty = default)
-          printf '\n' | .devcontainer/magento2-devcontainer/bin/init.sh
-
-          # Show the generated config
-          echo "=== devcontainer.json ==="
-          cat .devcontainer/devcontainer.json
-
-      - name: Build and start devcontainer
-        working-directory: test-project
-        run: |
-          devcontainer up --workspace-folder .
-
-      - name: Verify services are running
-        working-directory: test-project
-        run: |
-          echo "Waiting for OpenSearch to be ready..."
-          timeout 120 bash -c 'until curl -s http://localhost:9200/_cluster/health | grep -q "status"; do sleep 5; done'
-          echo "OpenSearch is ready"
-
-          echo "=== Checking PHP ==="
-          devcontainer exec --workspace-folder . php -v
-
-          echo "=== Checking database ==="
-          devcontainer exec --workspace-folder . \
-            bash -c 'mysql -h db -umagento -pmagento -e "SELECT 1" magento'
-
-          echo "=== Checking OpenSearch ==="
-          devcontainer exec --workspace-folder . \
-            bash -c 'curl -s http://opensearch:9200/_cluster/health'
-
-          echo "=== Checking RabbitMQ ==="
-          devcontainer exec --workspace-folder . \
-            bash -c 'curl -s -u magento:magento http://rabbitmq:15672/api/overview | head -c 200'
-
-          echo ""
-          echo "=== Checking Redis ==="
-          devcontainer exec --workspace-folder . \
-            bash -c 'redis-cli -h redis ping'
-
-      - name: Install Magento dependencies
-        working-directory: test-project
-        run: |
-          devcontainer exec --workspace-folder . composer install
-
-      - name: Run setup-install.sh
-        working-directory: test-project
-        run: |
-          echo "=== Generated setup:install command ==="
-          devcontainer exec --workspace-folder . \
-            bash -c '.devcontainer/magento2-devcontainer/bin/setup-install.sh'
-
-          echo ""
-          echo "=== Running Magento setup:install ==="
-          devcontainer exec --workspace-folder . \
-            bash -c '.devcontainer/magento2-devcontainer/bin/setup-install.sh | bash'
-
-      - name: Verify Magento installation
-        working-directory: test-project
-        run: |
-          echo "=== Checking Magento version ==="
-          devcontainer exec --workspace-folder . bin/magento --version
-
-          echo "=== Checking Magento status ==="
-          devcontainer exec --workspace-folder . bin/magento setup:db:status
-
-      - name: Show container status
-        if: always()
-        working-directory: test-project
-        run: |
-          docker ps -a
-
-  # Test fresh install (user only has Docker/VS Code, no PHP/Composer)
+  # Fresh install (user only has Docker/VS Code, no PHP/Composer). Stays
+  # vanilla-only: init.sh runs before composer.json exists, so its menu —
+  # which only lists Magento versions by design — is the only stack source.
   test-fresh-install:
     needs: supported-version-latest
     runs-on: ubuntu-latest
