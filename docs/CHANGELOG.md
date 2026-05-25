@@ -5,7 +5,30 @@
 
 ### ⚠ BREAKING CHANGES
 
-* 
+* Compose directories moved
+
+Vanilla Magento compose stacks now live at
+`compose/magento/<version>/`, not `compose/<version>/`. Existing
+projects must update the `dockerComposeFile` entry in
+`.devcontainer/devcontainer.json`:
+
+```diff
+-    "magento2-devcontainer/compose/2.4.9/docker-compose.yml",
++    "magento2-devcontainer/compose/magento/2.4.9/docker-compose.yml",
+```
+
+Easiest migration: re-run `bin/init.sh` and let it regenerate
+`devcontainer.json` against the new layout.
+
+* `jq` is now a runtime dependency
+
+Required by `bin/init.sh` and `bin/setup-install.sh` for parsing
+`composer.json` / `composer.lock`. Install on the host:
+
+```sh
+apt install jq        # Debian/Ubuntu
+brew install jq       # macOS
+```
 
 ### Features
 
