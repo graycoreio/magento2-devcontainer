@@ -18,7 +18,7 @@ jobs:
     outputs:
       matrix: ${{ steps.v.outputs.matrix }}
     steps:
-      - uses: graycoreio/github-actions-magento2/supported-version@v8.3.0
+      - uses: graycoreio/github-actions-magento2/supported-version@v8.4.0
         id: v
 
   supported-version-mage-os:
@@ -26,7 +26,7 @@ jobs:
     outputs:
       matrix: ${{ steps.v.outputs.matrix }}
     steps:
-      - uses: graycoreio/github-actions-magento2/supported-version@v8.3.0
+      - uses: graycoreio/github-actions-magento2/supported-version@v8.4.0
         id: v
         with:
           project: mage-os
@@ -36,7 +36,7 @@ jobs:
     outputs:
       matrix: ${{ steps.v.outputs.matrix }}
     steps:
-      - uses: graycoreio/github-actions-magento2/supported-version@v8.3.0
+      - uses: graycoreio/github-actions-magento2/supported-version@v8.4.0
         id: v
         with:
           project: mage-os-minimal
@@ -46,7 +46,7 @@ jobs:
     outputs:
       matrix: ${{ steps.v.outputs.matrix }}
     steps:
-      - uses: graycoreio/github-actions-magento2/supported-version@v8.3.0
+      - uses: graycoreio/github-actions-magento2/supported-version@v8.4.0
         id: v
         with:
           kind: latest
