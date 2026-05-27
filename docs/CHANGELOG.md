@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/graycoreio/magento2-devcontainer/compare/v3.0.0...v3.1.0) (2026-05-27)
+
+
+### Features
+
+* run setup-install with no-interaction ([8b5b7b3](https://github.com/graycoreio/magento2-devcontainer/commit/8b5b7b3efc974a5697d82fa118e96450e3bcd857))
+
 ## [3.0.0](https://github.com/graycoreio/magento2-devcontainer/compare/v2.0.0...v3.0.0) (2026-05-25)
 
 
