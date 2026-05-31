@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.0](https://github.com/graycoreio/magento2-devcontainer/compare/v3.2.0...v3.3.0) (2026-05-31)
+
+
+### Features
+
+* automatically composer install and setup:install if possible ([#30](https://github.com/graycoreio/magento2-devcontainer/issues/30)) ([fc67f1d](https://github.com/graycoreio/magento2-devcontainer/commit/fc67f1d5d6a71ec1868dc5a0ad35a86d70cd7e46))
+
 ## [3.2.0](https://github.com/graycoreio/magento2-devcontainer/compare/v3.1.0...v3.2.0) (2026-05-31)
 
 
