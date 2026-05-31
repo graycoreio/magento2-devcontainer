@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.2.0](https://github.com/graycoreio/magento2-devcontainer/compare/v3.1.0...v3.2.0) (2026-05-31)
+
+
+### Features
+
+* add workspace service port-forwarding to work around codespaces ([2c8d28b](https://github.com/graycoreio/magento2-devcontainer/commit/2c8d28b73cb3a586d76cd97bd43e7df7aeff37c5))
+* ensure that .gitignored files are correctly gitignored ([95cb7d6](https://github.com/graycoreio/magento2-devcontainer/commit/95cb7d61c90e871d759eda5c348a3beb1ecbd42f))
+* port-forward 8000 and 8025 on the workspace container on startup ([da74bfa](https://github.com/graycoreio/magento2-devcontainer/commit/da74bfa3ae735e90c164dd1e6dfdd10bf73ad7e2))
+* skip install if app/etc/env.php exists ([a80cd97](https://github.com/graycoreio/magento2-devcontainer/commit/a80cd970145f6515a026b48b35f698b84c4927fd))
+
 ## [3.1.0](https://github.com/graycoreio/magento2-devcontainer/compare/v3.0.0...v3.1.0) (2026-05-27)
 
 
