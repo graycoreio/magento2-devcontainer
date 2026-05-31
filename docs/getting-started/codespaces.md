@@ -15,7 +15,18 @@ If your repository already has the devcontainer configured, you can open it in G
 
 3. Wait for the environment to build
 
-4. Install dependencies and run setup:
+   On create, the devcontainer runs `composer install` automatically when the
+   project's dependencies resolve from auth-free repositories (e.g.
+   `mirror.mage-os.org`), and then runs `setup:install` automatically once the
+   dependencies are in place. You get a ready-to-use store with no manual steps.
+
+   If the project depends on license-gated repositories such as
+   `repo.magento.com` or Hyvä, `composer install` is **skipped** unless
+   credentials are available (and `setup:install` is skipped with it). Add a
+   [`COMPOSER_AUTH` Codespaces secret](https://docs.github.com/en/codespaces/managing-your-codespaces/managing-your-account-specific-secrets-for-github-codespaces)
+   (or commit an `auth.json`) and rebuild, or run the manual steps in step 4.
+
+4. (Only if the automatic install was skipped) Install dependencies and run setup:
 
 ```bash
 composer install
