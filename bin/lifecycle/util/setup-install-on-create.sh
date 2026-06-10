@@ -33,4 +33,14 @@ else
     notice "WARNING: setup:install failed. Open a terminal and run it manually:
         $SCRIPT_DIR/setup-install.sh | bash"
 fi
+
+# Run user customize script if present (.devcontainer/customize.sh)
+CUSTOMIZE="$(cd "$BIN_DIR/../.." && pwd)/customize.sh"
+if [ -f "$CUSTOMIZE" ]; then
+    notice "Running .devcontainer/customize.sh ..."
+    if ! bash "$CUSTOMIZE"; then
+        notice "WARNING: customize.sh exited with errors — check output above."
+    fi
+fi
+
 exit 0
