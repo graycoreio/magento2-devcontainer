@@ -23,7 +23,7 @@
     "docs:preview": "vitepress preview docs"
   },
   "devDependencies": {
-    "sitemap": "^9.0.0",
-    "vitepress": "^2.0.0-alpha.16"
+    "sitemap": "^9.0.1",
+    "vitepress": "^2.0.0-alpha.18"
   }
 }
