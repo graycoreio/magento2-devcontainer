@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.4.0](https://github.com/graycoreio/magento2-devcontainer/compare/v3.3.0...v3.4.0) (2026-07-13)
+
+
+### Features
+
+* allow init to work across semver-major mage-os / mage-os-minimal ([3834446](https://github.com/graycoreio/magento2-devcontainer/commit/383444660c9a36cd13f75d194a806ff39026d331))
+
+
+### Bug Fixes
+
+* allow setup-install to proceed when stack mismatches without a tty ([9770413](https://github.com/graycoreio/magento2-devcontainer/commit/97704131666afd0790eaae5148f7d2ea27f48f85))
+
 ## [3.3.0](https://github.com/graycoreio/magento2-devcontainer/compare/v3.2.0...v3.3.0) (2026-05-31)
 
 
