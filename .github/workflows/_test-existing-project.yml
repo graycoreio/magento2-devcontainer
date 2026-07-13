@@ -47,7 +47,7 @@ jobs:
             "${{ matrix.magento }}" test-project
 
       - name: Checkout devcontainer
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           path: test-project/.devcontainer/magento2-devcontainer
 
