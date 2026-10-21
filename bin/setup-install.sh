@@ -26,8 +26,8 @@ fi
 # previous "compare upstream Magento version" approach.
 if get_magento_version; then
     PROJECT_COMPOSE_KEY="$PROJECT_DISTRIBUTION/$PROJECT_VERSION"
-    # Patch releases (e.g. magento/2.4.6-p15) share the docker stack of
-    # their base version (magento/2.4.6) and init.sh wires the devcontainer
+    # Patch releases (e.g. magento/2.4.7-p10) share the docker stack of
+    # their base version (magento/2.4.7) and init.sh wires the devcontainer
     # to the base on purpose. Treat that pairing as a match, not a mismatch.
     PROJECT_BASE_KEY="${PROJECT_COMPOSE_KEY%-p[0-9]*}"
     if [ "$DEVCONTAINER_COMPOSE_KEY" != "$PROJECT_COMPOSE_KEY" ] \

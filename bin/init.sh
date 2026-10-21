@@ -20,7 +20,6 @@ echo "Target directory: $TARGET_DIR"
 ## Available Magento versions (version:label)
 ## Set label to "default" for the default version, "beta" for beta versions
 VERSIONS=(
-    "2.4.6:"
     "2.4.7:"
     "2.4.8"
     "2.4.9:default"
@@ -71,7 +70,7 @@ else
 fi
 
 ## First fallback: strip a `-pN` patch suffix and retry. Magento ships
-## patch releases like 2.4.6-p15 that share the same docker stack as 2.4.6,
+## patch releases like 2.4.7-p10 that share the same docker stack as 2.4.7,
 ## so we don't need a separate compose dir per patch.
 if [ ! -d "$DEVCONTAINER_FOLDER/compose/$SELECTED_KEY" ]; then
     BASE_KEY="${SELECTED_KEY%-p[0-9]*}"
