@@ -18,11 +18,13 @@
     "doc": "docs"
   },
   "scripts": {
+    "build": "node scripts/compose-images.mjs",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
   },
   "devDependencies": {
+    "@graycoreio/github-actions-magento2": "github:graycoreio/github-actions-magento2#v8.12.0",
     "sitemap": "^9.0.1",
     "vitepress": "^2.0.0-alpha.20"
   }

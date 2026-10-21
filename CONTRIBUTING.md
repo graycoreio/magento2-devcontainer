@@ -59,14 +59,13 @@ Before you submit your Pull Request (PR), consider the following:
    - `dev-v2.4.x` for changes to a specific version branch
 
 4. Make your changes.
+   1. If you're modifying the system versions, or adding a new image, you can run `npm run build` once [the changes you're planning to make are accepted in](https://github.com/graycoreio/github-actions-magento2/tree/main/supported-version). Please ensure your changes align with [Adobe's system requirements](https://experienceleague.adobe.com/en/docs/commerce-operations/installation-guide/system-requirements).
 
-5. Ensure your changes align with [Adobe's system requirements](https://experienceleague.adobe.com/en/docs/commerce-operations/installation-guide/system-requirements).
+5. Commit your changes using a descriptive commit message that follows our [commit message conventions](#commit-message-guidelines).
 
-6. Commit your changes using a descriptive commit message that follows our [commit message conventions](#commit-message-guidelines).
+6. Push your branch to GitHub.
 
-7. Push your branch to GitHub.
-
-8. Create a Pull Request targeting the appropriate branch.
+7. Create a Pull Request targeting the appropriate branch.
 
 ### AI Submission Guidelines
 
