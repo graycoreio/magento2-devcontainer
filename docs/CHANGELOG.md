@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.0.0](https://github.com/graycoreio/magento2-devcontainer/compare/v3.4.0...v4.0.0) (2026-10-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop support for Magento vv2.4.6
+
+### Features
+
+* drop support for Magento vv2.4.6 ([70253d3](https://github.com/graycoreio/magento2-devcontainer/commit/70253d35e27678d37f46d2794ae9ad51e0f78864))
+
 ## [3.4.0](https://github.com/graycoreio/magento2-devcontainer/compare/v3.3.0...v3.4.0) (2026-07-13)
 
 
