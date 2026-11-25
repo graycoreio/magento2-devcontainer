@@ -40,7 +40,7 @@ services:
       - php
 
   db:
-    image: mariadb:11.4
+    image: mariadb:12.3
     environment:
       MYSQL_ROOT_PASSWORD: magento
       MYSQL_DATABASE: magento

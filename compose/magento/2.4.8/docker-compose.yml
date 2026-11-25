@@ -23,7 +23,7 @@ services:
         condition: service_healthy
 
   nginx:
-    image: nginx:1.28
+    image: nginx:1.30
     environment:
       - MAGENTO2_UPSTREAM=php
       - MAGENTO2_UPSTREAM_PORT=9000
@@ -40,7 +40,7 @@ services:
       - php
 
   db:
-    image: mariadb:11.4
+    image: mariadb:11.8
     environment:
       MYSQL_ROOT_PASSWORD: magento
       MYSQL_DATABASE: magento
@@ -90,7 +90,7 @@ services:
       start_period: 60s
 
   rabbitmq:
-    image: rabbitmq:4.1-management
+    image: rabbitmq:4.3-management
     environment:
       RABBITMQ_DEFAULT_USER: magento
       RABBITMQ_DEFAULT_PASS: magento
@@ -109,7 +109,7 @@ services:
       start_period: 30s
 
   redis:
-    image: valkey/valkey:8
+    image: valkey/valkey:8.1
     ports:
       - "6379:6379"
     volumes:
