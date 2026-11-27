@@ -23,7 +23,7 @@ services:
         condition: service_healthy
 
   nginx:
-    image: nginx:1.28
+    image: nginx:1.30
     environment:
       - MAGENTO2_UPSTREAM=php
       - MAGENTO2_UPSTREAM_PORT=9000
@@ -40,7 +40,7 @@ services:
       - php
 
   db:
-    image: mariadb:10.11
+    image: mariadb:11.8
     environment:
       MYSQL_ROOT_PASSWORD: magento
       MYSQL_DATABASE: magento
@@ -61,7 +61,7 @@ services:
       start_period: 30s
 
   opensearch:
-    image: opensearchproject/opensearch:2.19.1
+    image: opensearchproject/opensearch:3
     environment:
       - discovery.type=single-node
       - bootstrap.memory_lock=true
@@ -90,7 +90,7 @@ services:
       start_period: 60s
 
   rabbitmq:
-    image: rabbitmq:3.13-management
+    image: rabbitmq:4.3-management
     environment:
       RABBITMQ_DEFAULT_USER: magento
       RABBITMQ_DEFAULT_PASS: magento
@@ -109,16 +109,16 @@ services:
       start_period: 30s
 
   redis:
-    image: redis:7.2
+    image: valkey/valkey:8.1
     ports:
       - "6379:6379"
     volumes:
       - redis_data:/data
     networks:
       - magento
-    command: redis-server --appendonly yes
+    command: valkey-server --appendonly yes
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "valkey-cli", "ping"]
       interval: 5s
       timeout: 3s
       retries: 10

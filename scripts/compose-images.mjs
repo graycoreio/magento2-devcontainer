@@ -27,7 +27,7 @@ const REPO_FIELDS = {
   'mappia/magento-php': 'php',
   'nginx': 'nginx',
   'mysql': 'mysql',
-  'mariadb': 'mysql',
+  'mariadb': 'mariadb',
   'opensearchproject/opensearch': 'opensearch',
   'elasticsearch': 'elasticsearch',
   'rabbitmq': 'rabbitmq',
