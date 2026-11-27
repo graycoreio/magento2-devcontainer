@@ -17,6 +17,7 @@ features:
   - title: Production Parity
     details: Matches Adobe's official system requirements with PHP, Nginx, MariaDB, OpenSearch, RabbitMQ, and Redis/Valkey.
   - title: Multi-Version Support
-    details: Supports all currently-supported Magento versions (2.4.7, 2.4.8, 2.4.9) with version-specific configurations.
+    details: Supports Magento Open Source 2.4.7, 2.4.8 and 2.4.9, and Mage-OS 4.0.0, with version-specific configurations.
+    link: /supported-versions
 ---
 
