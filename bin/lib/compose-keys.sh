@@ -23,7 +23,7 @@ compose_key_to_magento_version() {
     case "$key" in
         magento/*) echo "${key#magento/}" ;;
         # mage-os releases → upstream Magento each tracks
-        mage-os/3.0.0|mage-os-minimal/3.0.0) echo "2.4.9" ;;
+        mage-os/3.0.0|mage-os/4.0.0|mage-os-minimal/3.0.0|mage-os-minimal/4.0.0) echo "2.4.9" ;;
         *) return 1 ;;
     esac
 }
