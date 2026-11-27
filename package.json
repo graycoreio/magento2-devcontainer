@@ -26,6 +26,6 @@
   "devDependencies": {
     "@graycoreio/github-actions-magento2": "github:graycoreio/github-actions-magento2#v9.1.0",
     "sitemap": "^9.0.1",
-    "vitepress": "^2.0.0-alpha.20"
+    "vitepress": "^2.0.0-alpha.21"
   }
 }
