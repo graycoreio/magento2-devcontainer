@@ -35,6 +35,7 @@ export default defineConfig({
         text: 'Guide',
         items: [
           { text: 'What is a Devcontainer?', link: '/what-is-devcontainer' },
+          { text: 'Supported Versions', link: '/supported-versions' },
           { text: 'Getting Started', link: '/getting-started',
             items: [
               { text: 'From Scratch', link: '/getting-started/from-scratch' },

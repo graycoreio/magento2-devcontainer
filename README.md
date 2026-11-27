@@ -14,10 +14,14 @@
   <a href="https://hub.docker.com/r/mappia/magento-php"><img src="https://img.shields.io/docker/pulls/mappia/magento-php" alt="Docker Pulls" /></a>
 </p>
 
-<h3 align="center">Supported Versions</h3>
-<p align="center">
-  <a href="compose/magento/2.4.7/docker-compose.yml"><code>2.4.7</code></a> · <a href="compose/magento/2.4.8/docker-compose.yml"><code>2.4.8</code></a> · <a href="compose/magento/2.4.9/docker-compose.yml"><code>2.4.9</code></a> · <a href="compose/mage-os/4.0.0/docker-compose.yml"><code>mage-os 4.0.0</code></a> · <a href="compose/mage-os-minimal/4.0.0/docker-compose.yml"><code>mage-os-minimal 4.0.0</code></a>
-</p>
+## Supported Versions
+
+| Devcontainer | Magento Open Source | Mage-OS | Mage-OS Minimal |
+| --- | --- | --- | --- |
+| 4.x | [2.4.7](compose/magento/2.4.7/docker-compose.yml), [2.4.8](compose/magento/2.4.8/docker-compose.yml), [2.4.9](compose/magento/2.4.9/docker-compose.yml) | [4.0.0](compose/mage-os/4.0.0/docker-compose.yml) | [4.0.0](compose/mage-os-minimal/4.0.0/docker-compose.yml) |
+| 3.x | 2.4.6, 2.4.7, 2.4.8, 2.4.9 | 3.0.0 | 3.0.0 |
+| 2.x | 2.4.6, 2.4.7, 2.4.8, 2.4.9 (beta) | | |
+| 1.x | 2.4.6, 2.4.7, 2.4.8, 2.4.9 (beta) | | |
 
 ---
 
