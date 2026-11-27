@@ -46,6 +46,10 @@ jobs:
             --repository-url="${{ inputs.repository_url }}" \
             "${{ matrix.magento }}" test-project
 
+      - uses: graycoreio/github-actions-magento2/fix-magento-install@v9.1.0
+        with:
+          magento_directory: test-project
+
       - name: Checkout devcontainer
         uses: actions/checkout@v7
         with:
