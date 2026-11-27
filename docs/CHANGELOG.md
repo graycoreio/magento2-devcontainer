@@ -1,5 +1,19 @@
 # Changelog
 
+## [4.0.0](https://github.com/graycoreio/magento2-devcontainer/compare/v3.4.0...v4.0.0) (2026-11-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop support for Mage-OS 3.0.0 ([#57](https://github.com/graycoreio/magento2-devcontainer/issues/57))
+* drop support for Magento vv2.4.6
+
+### Features
+
+* drop support for Mage-OS 3.0.0 ([#57](https://github.com/graycoreio/magento2-devcontainer/issues/57)) ([d57729e](https://github.com/graycoreio/magento2-devcontainer/commit/d57729eea2045f19bc493e60d0139bef832096d3))
+* drop support for Magento vv2.4.6 ([70253d3](https://github.com/graycoreio/magento2-devcontainer/commit/70253d35e27678d37f46d2794ae9ad51e0f78864))
+* **mage-os:** add support for Mage-OS 4.0.0 ([#55](https://github.com/graycoreio/magento2-devcontainer/issues/55)) ([226f885](https://github.com/graycoreio/magento2-devcontainer/commit/226f88548cf2d33c577ca2cf387e96ed5d0cf290))
+
 ## [3.4.0](https://github.com/graycoreio/magento2-devcontainer/compare/v3.3.0...v3.4.0) (2026-07-13)
 
 
