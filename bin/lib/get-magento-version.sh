@@ -19,7 +19,7 @@
 #                         e.g. "mage-os/product-minimal-edition"
 #   PROJECT_DISTRIBUTION  one of: "magento" | "mage-os" | "mage-os-minimal"
 #   PROJECT_VERSION       distribution-native version straight from composer,
-#                         e.g. "2.4.9" for vanilla, "3.0.0" for mage-os
+#                         e.g. "2.4.9" for vanilla, "4.0.0" for mage-os
 # Stdout:  (nothing — output is via the globals above)
 # Stderr:  progress messages on success; error messages on failure
 # Returns: 0 on success; 1 if jq is unavailable, no Magento root is found,

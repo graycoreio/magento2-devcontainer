@@ -13,11 +13,11 @@
 #   DEVCONTAINER_JSON_PATH    path to the devcontainer.json that was found
 #   DEVCONTAINER_COMPOSE_KEY  compose key parsed from dockerComposeFile,
 #                             always "<distribution>/<version>"
-#                             (e.g. "magento/2.4.9", "mage-os-minimal/3.0.0")
+#                             (e.g. "magento/2.4.9", "mage-os-minimal/4.0.0")
 #   DEVCONTAINER_DISTRIBUTION distribution segment of the compose key
 #                             ("magento" | "mage-os" | "mage-os-minimal")
 #   DEVCONTAINER_VERSION      distribution-native version segment of the key
-#                             (e.g. "2.4.9" for vanilla, "3.0.0" for mage-os)
+#                             (e.g. "2.4.9" for vanilla, "4.0.0" for mage-os)
 #
 # Note: this getter no longer exposes the *upstream Magento series* for
 # mage-os stacks. Callers that need it should run
